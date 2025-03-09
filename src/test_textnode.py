@@ -1,7 +1,7 @@
 import unittest
 
-from textnode import TextNode, TextType
-
+from textnode import TextNode, TextType,  text_node_to_html_node
+from htmlnode import LeafNode
 
 class TestTextNode(unittest.TestCase):
     def test_eq_same_text_bold(self):
@@ -31,8 +31,14 @@ class TestTextNode(unittest.TestCase):
 
     def test_not_eq_different_types(self):
         node = TextNode("This is a text node", TextType.BOLD)
-        node2 = TextNode("This is a text node", TextType.URL, "https://www.boot.dev")
+        node2 = TextNode("This is a text node", TextType.LINK, "https://www.boot.dev")
         self.assertNotEqual(node, node2)
+
+    def test_text(self):
+        node = TextNode("This is a text node", TextType.TEXT)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
 
 
 if __name__ == "__main__":
